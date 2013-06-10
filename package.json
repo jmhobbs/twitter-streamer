@@ -1,0 +1,26 @@
+{
+  "name": "trs-twitter-stream",
+  "version": "0.1.0",
+  "description": "Twitter Stream focuses on providing a nice interface to open a stream connection and present the end-user with individual objects for each tweet.",
+  "main": "index.js",
+  "dependencies": {
+    "async": "~0.2.9",
+    "oauth": "~0.9.10",
+    "lodash": "~1.2.1"
+  },
+  "devDependencies": {
+    "webkit-devtools-agent": "~0.1.1",
+    "debug": "~0.7.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Twitter",
+    "Stream",
+    "REDspace"
+  ],
+  "author": "Jamie Stackhouse",
+  "license": "Not sure yet.",
+  "readmeFilename": "README.md"
+}
