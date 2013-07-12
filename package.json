@@ -9,7 +9,6 @@
     "lodash": "~1.2.1"
   },
   "devDependencies": {
-    "webkit-devtools-agent": "~0.1.1",
     "debug": "~0.7.2"
   },
   "scripts": {
@@ -21,6 +20,6 @@
     "REDspace"
   ],
   "author": "Jamie Stackhouse",
-  "license": "Not sure yet.",
+  "license": "MIT",
   "readmeFilename": "README.md"
 }
