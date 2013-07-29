@@ -1,25 +1,31 @@
 {
-  "name": "trs-twitter-stream",
-  "version": "0.1.0",
-  "description": "Twitter Stream focuses on providing a nice interface to open a stream connection and present the end-user with individual objects for each tweet.",
+  "name": "twitter-streamer",
+  "version": "0.1.1",
+  "engines": {
+    "node": ">=0.8.x"
+  },
+  "description": "Implement a reader for the twitter streaming API, outputs tweets via a callback function.",
   "main": "index.js",
-  "dependencies": {
-    "async": "~0.2.9",
-    "oauth": "~0.9.10",
-    "lodash": "~1.2.1"
-  },
-  "devDependencies": {
-    "debug": "~0.7.2"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "Twitter",
     "Stream",
-    "REDspace"
+    "API"
   ],
-  "author": "Jamie Stackhouse",
+  "author": {
+    "name": "Jamie Stackhouse"
+  },
   "license": "MIT",
-  "readmeFilename": "README.md"
+  "dependencies": {
+    "debug": "~0.7.2",
+    "async": "~0.2.9",
+    "oauth": "~0.9.10",
+    "lodash": "~1.3.1"
+  },
+  "readme": "```\nvar config = require('./config.json');\n\nvar incoming = new Incoming({\n  callback_url: \"http://localhost:3000/callback\",\n  consumer_key: config.consumer_key,\n  consumer_secret: config.consumer_secret\n});\n\n\nvar index = incoming.open({\n  access_token: config.access_token,\n  access_token_secret: config.access_token_secret,\n  callback: function(tweet) {\n    console.log('tweet');\n  },\n  parameters: {\n    track: config.track\n  }\n});\n\nincoming.close(index);\n```",
+  "readmeFilename": "README.md",
+  "_id": "twitter-streamer@0.1.0",
+  "_from": "twitter-streamer@~0.1.0"
 }

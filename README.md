@@ -1,4 +1,23 @@
-twitter-streamer
-================
+```
+var config = require('./config.json');
 
-Focuses on providing a nice interface to open a stream connection and present the end-user with individual objects for each tweet.
+var incoming = new Incoming({
+  callback_url: "http://localhost:3000/callback",
+  consumer_key: config.consumer_key,
+  consumer_secret: config.consumer_secret
+});
+
+
+var index = incoming.open({
+  access_token: config.access_token,
+  access_token_secret: config.access_token_secret,
+  callback: function(tweet) {
+    console.log('tweet');
+  },
+  parameters: {
+    track: config.track
+  }
+});
+
+incoming.close(index);
+```

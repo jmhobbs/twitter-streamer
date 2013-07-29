@@ -1,9 +1,7 @@
-//Profiling/Heap Stack information
-var agent = require('webkit-devtools-agent');
-//Running this with DEBUG=debug will enable messages sent with debug object.
+//Running this with DEBUG=twitter will enable messages sent with debug object.
 var debug = require('debug')('twitter');
 
-//Dependencies 
+//Dependencies
 var async = require('async');
 var _ = require('lodash');
 var OAuth = require('oauth').OAuth;
@@ -41,12 +39,12 @@ var Incoming = function(options) {
   );
 
   this.streams = [];
-}
+};
 
-Incoming.prototype.abort = function(index) {
+Incoming.prototype.close = function(index) {
   this.streams[index].request.abort();
   debug('Stream closed');
-}
+};
 
 Incoming.prototype.open = function(options) {
   var self = this;
@@ -57,13 +55,12 @@ Incoming.prototype.open = function(options) {
     }
 
     if (typeof(options.url) != "string") {
-      debug('Defaulting URL to https://stream.twitter.com/1.1/statuses/filter.json')
+      debug('Defaulting URL to https://stream.twitter.com/1.1/statuses/filter.json');
     }
 
     if (typeof(options.callback) != "function") {
       debug('No callback function provided, defaulting to console.log');
-      
-    }  
+    }
   } else {
     throw new Error('You must pass configuration for the stream via an object.');
   }
@@ -73,7 +70,7 @@ Incoming.prototype.open = function(options) {
   }
 
   if (typeof(options.access_token_secret) != "string") {
-    throw new Error('The access_token_secret must be provided.')
+    throw new Error('The access_token_secret must be provided.');
   }
 
   options = _.defaults({}, options, {
@@ -98,17 +95,17 @@ Incoming.prototype.open = function(options) {
   var connection = {
     request: request,
     callback: options.callback
-  }
+  };
 
   var index = this.streams.push(connection) - 1;
-  
+
   request.on('response', function(response) {
-    
+
     response.setEncoding('utf8');
-    
+
     response.on('data', function(chunk) {
       self.parse({
-        chunk: chunk, 
+        chunk: chunk,
         index: index
       });
     });
@@ -121,9 +118,9 @@ Incoming.prototype.open = function(options) {
   });
   request.end();
 
-  //Give back index of stream, to be used with closeStream.
+  //Give back index of stream, to be used with close.
   return index;
-}
+};
 
 // OLD REGEXP SOLUTION
   //var regexp = /([^\s},]?.*}[^\s,}]?)+/g
@@ -135,48 +132,28 @@ Incoming.prototype.parse = function(obj) {
   async.each(array, function(item, callback) {
     self.giveTweet({tweet: item, index: obj.index}, callback);
   }, function(err) {
-    if (err && process.env.DEBUG) {
-      var fs = require('fs');
-      fs.writeFileSync('test', obj.chunk);
+    if (err) {
+      throw new Error(err);
     }
   });
-}
+};
 
 Incoming.prototype.giveTweet = function(obj, cb) {
-  try {
-    var tweet = obj.tweet;
+  var errored = false;
+  var tweet = obj.tweet;
+  if (obj.tweet !== "") {
     tweet = JSON.parse(tweet);
     debug('Outgoing Tweet');
     debug('Tweet Created_At: %s', tweet.created_at);
     debug('Tweet Content: %s', tweet.text);
-    this.streams[obj.index].callback(tweet);
-    cb(null);
-  } catch(e) {
-    cb(e);
+    var err = null;
+    try {
+      this.streams[obj.index].callback(tweet);
+    } catch(e) {
+      err = e;
+    }
+    cb(err);
   }
-}
-
+};
 module.exports = Incoming;
 
-
-
-//Example
-var config = require('./config.json');
-
-var incoming = new Incoming({
-  callback_url: "http://localhost:3000/callback",
-  consumer_key: config.consumer_key,
-  consumer_secret: config.consumer_secret
-});
-
-
-var index = incoming.open({
-  access_token: config.access_token,
-  access_token_secret: config.access_token_secret,
-  callback: function(tweet) {
-    console.log('tweet');
-  },
-  parameters: {
-    track: config.track
-  }
-});
