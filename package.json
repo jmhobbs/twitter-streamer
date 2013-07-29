@@ -4,6 +4,10 @@
   "engines": {
     "node": ">=0.8.x"
   },
+  "repository": {
+    "type": "git",
+    "url" : "https://github.com/jamie-stackhouse/twitter-streamer.git"
+  },
   "description": "Implement a reader for the twitter streaming API, outputs tweets via a callback function.",
   "main": "index.js",
   "scripts": {
