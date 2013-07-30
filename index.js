@@ -98,16 +98,18 @@ Incoming.prototype.open = function(options) {
   };
 
   var index = this.streams.push(connection) - 1;
-
+  var data = "";
   request.on('response', function(response) {
-
     response.setEncoding('utf8');
-
     response.on('data', function(chunk) {
-      self.parse({
-        chunk: chunk,
-        index: index
-      });
+      data += chunk;
+      if (data.charCodeAt(data.length - 2) === 13) {
+        self.parse({
+          chunk: data,
+          index: index
+        });
+        data = "";
+      }
     });
 
     response.on('end', function() {
