@@ -2,13 +2,13 @@
 var util = require('util');
 
 var T = new (require('twitter-streamer'))({
-  "consumer_key": "QuFgG2HIGWaTV1eAtwpB0Q",
-  "consumer_secret": "chielyjRgsRMZ7kJzrXD0R525tlGzY4uS5YHq2s6CI"
+  "consumer_key": "Blurb",
+  "consumer_secret": "Durb"
 });
 
 var stream = new T.Stream({
-  "access_token": "346088055-lb01iQfM7bFE3CPowBPzr2p5ygZ0TZ5CFfzZajmT",
-  "access_token_secret": "cubF2YrUa5LfiHxqA4XNu9c98SP2uHcJ11HVVuHmMo",
+  "access_token": "Hurp",
+  "access_token_secret": "Derp",
   "parameters": {
     track: "alot"
   }
